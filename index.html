@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+<div id="app">
+    <div class="slider">
+        <img  @click="imgClick" src="" alt="">
+    </div>
+</div>
+</body>
+</html>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.5.16/vue.js"></script>
+<script>
+     var myvue = new Vue({
+            el: '#app',
+            data: {
+                toDisplay: 0,
+                n: 0,
+                
+                sources: [
+                    "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRTbO6rl10PpqHA4vzytYCN8zKYq8F4y-Ywhm0K2LBAO4FuHzcS",
+                    "https://pbs.twimg.com/profile_images/378800000638927723/388137d48b79037f9ab99cef8ef53395.jpeg",
+                ]
+            },
+            methods: {
+                imgClick: function(){
+                    if(this.toDisplay < this.n -1)
+                        this.toDisplay++;
+                    else
+                        this.toDisplay = 0;
+                    event.target.setAttribute("src", this.sources[this.toDisplay]);     
+                },
+                fadeOutAndres:function(elem, time){
+                 var opacidad = window.getComputedStyle(elem,null).getPropertyValue("opacity");
+                 var ejecucion = setInterval(function(){
+                    opacidad -= 0.05;
+                    elem.style.opacity = opacidad;
+                    if(opacidad <= 0)
+                    clearInterval(ejecucion);
+                    },time)             
+                }
+                
+            },
+            mounted: function(){
+                this.n = this.sources.length;
+                document.querySelector(".slider img").setAttribute("src", this.sources[this.toDisplay]);
+                document.querySelector(".slider").onclick = function(){
+                fadeOutAndres(event.target, 20)
+                };
+            },
+        });
+</script>
+<style>
+    .slider{
+        position: relative;
+        height: 600px;
+        width: 400px;
+        opacity:1;
+    }
+</style>
